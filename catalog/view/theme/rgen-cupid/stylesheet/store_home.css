@@ -24,26 +24,26 @@
 	============================
 */
 /* Control Nav */
-.store-home .flex-control-nav { font-size:0px; width: 100%; bottom: -7px; left:0px; height:6px; background:#434444; }
+.store-home .flex-control-nav { font-size:0px; width: 100%; bottom: -7px; left:0px; height:0px; background:#111; }
 .store-home .flex-control-nav li { font-size:13px; position:relative; z-index:555; margin:-16px 5px 0 5px;  }
 .store-home .flex-control-paging li a { 
 	width: 30px; height: 25px; 
 	padding-top:5px;
 	border-radius: 40px; 
-	border:5px solid #434444; 
+	border:5px solid #f690a3; 
 	background:#fff; 
 	text-align:center;
 	font-family: 'Oswald', sans-serif;
 	font-size:13px;
 	font-weight:400;
-	color:#434444;
+	color:#f690a3;
 	margin:auto;
 	text-indent: 0px;
 }
-.store-home .flex-control-paging li a:hover { background: #434444; color:#fff; text-decoration:none; }
-.store-home .flex-control-paging li.active { background: #ed5f79; }
+.store-home .flex-control-paging li a:hover { background: ##fff367; color:#fff; text-decoration:none; }
+.store-home .flex-control-paging li.active { background: ##fff367; }
 .store-home .flex-control-paging li a.flex-active { 
-	background: #ed5f79; cursor: default; border-color:#fff; color:#fff; 
+	background: #f690a3; cursor: default; border-color:#fff; color:#fff; 
 	-webkit-box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.3);
 	box-shadow: 0px 1px 5px 0px rgba(0, 0, 0, 0.3);
 	}
