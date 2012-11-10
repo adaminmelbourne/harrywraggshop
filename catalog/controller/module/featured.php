@@ -1,18 +1,27 @@
 <?php
 class ControllerModuleFeatured extends Controller {
 	protected function index($setting) {
-		$this->language->load('module/featured'); 
+		static $module = 0;
+		
+		$this->document->addScript('catalog/view/theme/rgen-cupid/js/jquery.jscrollpane.min.js');
+		$this->document->addScript('catalog/view/theme/rgen-cupid/js/jquery.mousewheel.js');
+		$this->document->addStyle('catalog/view/theme/rgen-cupid/stylesheet/scrollpane.css');
+		
+		$this->language->load('module/featured');
 
       	$this->data['heading_title'] = $this->language->get('heading_title');
-		
 		$this->data['button_cart'] = $this->language->get('button_cart');
+		
+		$this->data['button_moreinfo'] = $this->language->get('button_moreinfo');
+		$this->data['button_wishlist'] = $this->language->get('button_wishlist');
+		$this->data['button_compare'] = $this->language->get('button_compare');
 		
 		$this->load->model('catalog/product'); 
 		
 		$this->load->model('tool/image');
 
 		$this->data['products'] = array();
-
+		
 		$products = explode(',', $this->config->get('featured_product'));		
 
 		if (empty($setting['limit'])) {
@@ -53,6 +62,7 @@ class ControllerModuleFeatured extends Controller {
 					'product_id' => $product_info['product_id'],
 					'thumb'   	 => $image,
 					'name'    	 => $product_info['name'],
+					'description'=> utf8_substr(strip_tags(html_entity_decode($product_info['description'], ENT_QUOTES, 'UTF-8')), 0, 100) . '..',
 					'price'   	 => $price,
 					'special' 	 => $special,
 					'rating'     => $rating,
@@ -61,13 +71,23 @@ class ControllerModuleFeatured extends Controller {
 				);
 			}
 		}
+				 
+		$this->data['module'] = $module++; 
 
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/module/featured.tpl')) {
 			$this->template = $this->config->get('config_template') . '/template/module/featured.tpl';
 		} else {
 			$this->template = 'default/template/module/featured.tpl';
 		}
-
+		
+		$this->load->model('design/layout');
+		$this->data ['getRoute'] = 'common/home';
+		if (isset($this->request->get['route'])) {
+			$this->data ['getRoute'] = $this->request->get['route'];
+		} else {
+			$this->data ['getRoute'] = 'common/home';
+		}
+				
 		$this->render();
 	}
 }

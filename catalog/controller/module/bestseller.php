@@ -1,11 +1,20 @@
 <?php
 class ControllerModuleBestSeller extends Controller {
 	protected function index($setting) {
+		
+		static $module = 0;
+		$this->document->addScript('catalog/view/theme/rgen-cupid/js/jquery.jscrollpane.min.js');
+		$this->document->addScript('catalog/view/theme/rgen-cupid/js/jquery.mousewheel.js');
+		$this->document->addStyle('catalog/view/theme/rgen-cupid/stylesheet/scrollpane.css');
+		
 		$this->language->load('module/bestseller');
  
       	$this->data['heading_title'] = $this->language->get('heading_title');
-				
 		$this->data['button_cart'] = $this->language->get('button_cart');
+		
+		$this->data['button_moreinfo'] = $this->language->get('button_moreinfo');
+		$this->data['button_wishlist'] = $this->language->get('button_wishlist');
+		$this->data['button_compare'] = $this->language->get('button_compare');
 		
 		$this->load->model('catalog/product');
 		
@@ -44,6 +53,7 @@ class ControllerModuleBestSeller extends Controller {
 				'product_id' => $result['product_id'],
 				'thumb'   	 => $image,
 				'name'    	 => $result['name'],
+				'description'=> utf8_substr(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8')), 0, 100) . '..',
 				'price'   	 => $price,
 				'special' 	 => $special,
 				'rating'     => $rating,
@@ -51,11 +61,21 @@ class ControllerModuleBestSeller extends Controller {
 				'href'    	 => $this->url->link('product/product', 'product_id=' . $result['product_id']),
 			);
 		}
+		
+		$this->data['module'] = $module++; 
 
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/module/bestseller.tpl')) {
 			$this->template = $this->config->get('config_template') . '/template/module/bestseller.tpl';
 		} else {
 			$this->template = 'default/template/module/bestseller.tpl';
+		}
+		
+		$this->load->model('design/layout');
+		$this->data ['getRoute'] = 'common/home';
+		if (isset($this->request->get['route'])) {
+			$this->data ['getRoute'] = $this->request->get['route'];
+		} else {
+			$this->data ['getRoute'] = 'common/home';
 		}
 
 		$this->render();

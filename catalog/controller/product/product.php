@@ -3,6 +3,18 @@ class ControllerProductProduct extends Controller {
 	private $error = array(); 
 	
 	public function index() { 
+		
+		/* NEW JS FILES */
+		$this->document->addScript('catalog/view/theme/rgen-cupid/js/jquery.jscrollpane.min.js');
+		$this->document->addScript('catalog/view/theme/rgen-cupid/js/jquery.tools.min.js');
+		$this->document->addScript('catalog/view/theme/rgen-cupid/js/jquery.mousewheel.js');
+		$this->document->addScript('catalog/view/theme/rgen-cupid/js/cloud-zoom.1.0.2.min.js');
+		$this->document->addScript('catalog/view/theme/rgen-cupid/js/script.js');
+		
+		/* NEW CSS FILES */
+		$this->document->addStyle('catalog/view/theme/rgen-cupid/stylesheet/scrollpane.css');
+		$this->document->addStyle('catalog/view/theme/rgen-cupid/stylesheet/cloud-zoom.css');
+		
 		$this->language->load('product/product');
 	
 		$this->data['breadcrumbs'] = array();
@@ -80,7 +92,7 @@ class ControllerProductProduct extends Controller {
 				'text'      => $this->language->get('text_search'),
 				'href'      => $this->url->link('product/search', $url),
 				'separator' => $this->language->get('text_separator')
-			); 	
+			);	
 		}
 		
 		if (isset($this->request->get['product_id'])) {
@@ -93,6 +105,7 @@ class ControllerProductProduct extends Controller {
 		
 		$product_info = $this->model_catalog_product->getProduct($product_id);
 		
+				
 		if ($product_info) {
 			$url = '';
 			
@@ -162,6 +175,7 @@ class ControllerProductProduct extends Controller {
 			
 			$this->data['button_cart'] = $this->language->get('button_cart');
 			$this->data['button_wishlist'] = $this->language->get('button_wishlist');
+			$this->data['button_moreinfo'] = $this->language->get('button_moreinfo');
 			$this->data['button_compare'] = $this->language->get('button_compare');			
 			$this->data['button_upload'] = $this->language->get('button_upload');
 			$this->data['button_continue'] = $this->language->get('button_continue');
@@ -202,6 +216,12 @@ class ControllerProductProduct extends Controller {
 				$this->data['thumb'] = '';
 			}
 			
+			if ($product_info['image']) {
+				$this->data['additional'] = $this->model_tool_image->resize($product_info['image'], $this->config->get('config_image_additional_width'), $this->config->get('config_image_additional_height'));
+			} else {
+				$this->data['additional'] = '';
+			}
+			
 			$this->data['images'] = array();
 			
 			$results = $this->model_catalog_product->getProductImages($this->request->get['product_id']);
@@ -209,9 +229,11 @@ class ControllerProductProduct extends Controller {
 			foreach ($results as $result) {
 				$this->data['images'][] = array(
 					'popup' => $this->model_tool_image->resize($result['image'], $this->config->get('config_image_popup_width'), $this->config->get('config_image_popup_height')),
-					'thumb' => $this->model_tool_image->resize($result['image'], $this->config->get('config_image_additional_width'), $this->config->get('config_image_additional_height'))
+					'thumb' => $this->model_tool_image->resize($result['image'], $this->config->get('config_image_additional_width'), $this->config->get('config_image_additional_height')),
+					'thumb1' => $this->model_tool_image->resize($result['image'], $this->config->get('config_image_thumb_width'), $this->config->get('config_image_thumb_height'))
 				);
 			}	
+			
 						
 			if (($this->config->get('config_customer_price') && $this->customer->isLogged()) || !$this->config->get('config_customer_price')) {
 				$this->data['price'] = $this->currency->format($this->tax->calculate($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax')));
@@ -332,6 +354,7 @@ class ControllerProductProduct extends Controller {
 					'product_id' => $result['product_id'],
 					'thumb'   	 => $image,
 					'name'    	 => $result['name'],
+					'description' => utf8_substr(strip_tags(html_entity_decode($result['description'], ENT_QUOTES, 'UTF-8')), 0, 100) . '..',
 					'price'   	 => $price,
 					'special' 	 => $special,
 					'rating'     => $rating,
@@ -424,7 +447,8 @@ class ControllerProductProduct extends Controller {
 				'common/content_top',
 				'common/content_bottom',
 				'common/footer',
-				'common/header'
+				'common/header',
+				'module/rgen_theme'
 			);
 						
 			$this->response->setOutput($this->render());

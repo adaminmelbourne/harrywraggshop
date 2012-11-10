@@ -30,6 +30,14 @@ class ControllerModuleBanner extends Controller {
 			$this->template = 'default/template/module/banner.tpl';
 		}
 		
+		$this->load->model('design/layout');
+		$this->data ['getRoute'] = 'common/home';
+		if (isset($this->request->get['route'])) {
+			$this->data ['getRoute'] = $this->request->get['route'];
+		} else {
+			$this->data ['getRoute'] = 'common/home';
+		}
+		
 		$this->render();
 	}
 }

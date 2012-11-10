@@ -1,0 +1,195 @@
+<?php echo $header; ?>
+<div id="content">
+	<div id="main" class="wrapper clearfix"><?php
+		
+		/* PAGE HEADER
+		***************/
+		?><div class="pagehead">
+			<h1><?php echo $heading_title; ?></h1>
+			<div>
+			<?php foreach ($breadcrumbs as $breadcrumb) { ?>
+			<?php echo $breadcrumb['separator']; ?><a href="<?php echo $breadcrumb['href']; ?>"><?php echo $breadcrumb['text']; ?></a>
+			<?php } ?>
+			</div>
+		</div><?php
+		
+		/* SIDE COLUMNS
+		***************/
+		?><?php echo $column_left; ?>
+		<?php echo $column_right; ?><?php
+		
+		
+		/* PAGE CONTENT
+		***************/
+		?><div id="content-body">
+			
+			<?php if ($error_warning) { ?>
+			<div class="warning"><?php echo $error_warning; ?></div>
+			<?php } ?>
+			
+			<?php echo $content_top; ?>
+			<?php echo $text_description; ?>
+			<form action="<?php echo $action; ?>" method="post" enctype="multipart/form-data">
+				
+				<div class="box-form">
+					<h2 class="header-3"><?php echo $text_order; ?></h2>
+					<div class="content">
+						<table class="form">
+							<tr>
+								<td><span class="required">*</span> <?php echo $entry_firstname; ?></td>
+								<td>
+									<input type="text" name="firstname" value="<?php echo $firstname; ?>" class="large-field" />
+									<?php if ($error_firstname) { ?><span class="error"><?php echo $error_firstname; ?></span><?php } ?>
+								</td>
+							</tr>
+							<tr>
+								<td><span class="required">*</span> <?php echo $entry_lastname; ?></td>
+								<td>
+									<input type="text" name="lastname" value="<?php echo $lastname; ?>" class="large-field" />
+									<?php if ($error_lastname) { ?>
+									<span class="error"><?php echo $error_lastname; ?></span>
+									<?php } ?>
+								</td>
+							</tr>
+							<tr>
+								<td><span class="required">*</span> <?php echo $entry_email; ?></td>
+								<td>
+									<input type="text" name="email" value="<?php echo $email; ?>" class="large-field" />
+									<?php if ($error_email) { ?>
+									<span class="error"><?php echo $error_email; ?></span>
+									<?php } ?>
+								</td>
+							</tr>
+							<tr>
+								<td><span class="required">*</span> <?php echo $entry_telephone; ?></td>
+								<td>
+									<input type="text" name="telephone" value="<?php echo $telephone; ?>" class="large-field" />
+									<?php if ($error_telephone) { ?>
+									<span class="error"><?php echo $error_telephone; ?></span>
+									<?php } ?>
+								</td>
+							</tr>
+							<tr>
+								<td><span class="required">*</span> <?php echo $entry_order_id; ?></td>
+								<td>
+									<input type="text" name="order_id" value="<?php echo $order_id; ?>" class="large-field" />
+									<?php if ($error_order_id) { ?>
+									<span class="error"><?php echo $error_order_id; ?></span>
+									<?php } ?>
+								</td>
+							</tr>
+							<tr>
+								<td><?php echo $entry_date_ordered; ?></td>
+								<td><input type="text" name="date_ordered" value="<?php echo $date_ordered; ?>" class="large-field date" /></td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				
+				<div class="box-form">
+					<h2 class="header-3"><?php echo $text_product; ?></h2>
+					<div class="content">
+						<table class="form">
+							<tr>
+								<td><span class="required">*</span> <?php echo $entry_product; ?></td>
+								<td>
+									<input type="text" name="product" value="<?php echo $product; ?>" />
+									<?php if ($error_product) { ?>
+									<span class="error"><?php echo $error_product; ?></span>
+									<?php } ?>
+								</td>
+							</tr>
+							<tr>
+								<td><span class="required">*</span> <?php echo $entry_model; ?></td>
+								<td>
+									<input type="text" name="model" value="<?php echo $model; ?>" />
+									<?php if ($error_model) { ?>
+									<span class="error"><?php echo $error_model; ?></span>
+									<?php } ?>
+								</td>
+							</tr>
+							<tr>
+								<td><?php echo $entry_quantity; ?></td>
+								<td>
+									<input type="text" name="quantity" value="<?php echo $quantity; ?>" />
+								</td>
+							</tr>
+							<tr>
+								<td><span class="required">*</span> <?php echo $entry_reason; ?></td>
+								<td>
+									<?php foreach ($return_reasons as $return_reason) { ?>
+									<?php if ($return_reason['return_reason_id'] == $return_reason_id) { ?>
+									<div>
+										<input type="radio" name="return_reason_id" value="<?php echo $return_reason['return_reason_id']; ?>" id="return-reason-id<?php echo $return_reason['return_reason_id']; ?>" checked="checked" />
+										<label for="return-reason-id<?php echo $return_reason['return_reason_id']; ?>"><?php echo $return_reason['name']; ?></label>
+									</div>
+									<?php } else { ?>
+									<div>
+										<input type="radio" name="return_reason_id" value="<?php echo $return_reason['return_reason_id']; ?>" id="return-reason-id<?php echo $return_reason['return_reason_id']; ?>" />
+										<label for="return-reason-id<?php echo $return_reason['return_reason_id']; ?>"><?php echo $return_reason['name']; ?></label>
+									</div>
+									<?php  } ?>
+									<?php  } ?>
+										
+									<?php if ($error_reason) { ?>
+									<span class="error"><?php echo $error_reason; ?></span>
+									<?php } ?>
+								</td>
+							</tr>
+							<tr>
+								<td><?php echo $entry_opened; ?></td>
+								<td>
+									<?php if ($opened) { ?>
+									<input type="radio" name="opened" value="1" id="opened" checked="checked" />
+									<?php } else { ?>
+									<input type="radio" name="opened" value="1" id="opened" />
+									<?php } ?>
+									<label for="opened"><?php echo $text_yes; ?></label>
+									<?php if (!$opened) { ?>
+									<input type="radio" name="opened" value="0" id="unopened" checked="checked" />
+									<?php } else { ?>
+									<input type="radio" name="opened" value="0" id="unopened" />
+									<?php } ?>
+									<label for="unopened"><?php echo $text_no; ?></label>
+								</td>
+							</tr>
+							<tr>
+								<td><?php echo $entry_fault_detail; ?></td>
+								<td>
+									<textarea name="comment" cols="80" rows="6"><?php echo $comment; ?></textarea>
+								</td>
+							</tr>
+							<tr>
+								<td><?php echo $entry_captcha; ?></td>
+								<td>
+									<input type="text" name="captcha" style="width:100px; height:27px;vertical-align:middle;" value="<?php echo $captcha; ?>" />
+									<img src="index.php?route=account/return/captcha" alt="" style="vertical-align:middle;" />
+									<?php if ($error_captcha) { ?>
+									<span class="error"><?php echo $error_captcha; ?></span>
+									<?php } ?>
+								</td>
+							</tr>
+						</table>
+					</div>
+				</div>
+				
+				<div class="buttons">
+					<a href="<?php echo $back; ?>" class="button"><?php echo $button_back; ?></a>
+					<div class="right">
+						<input type="submit" value="<?php echo $button_continue; ?>" class="button" />
+					</div>
+				</div>
+			</form>
+			
+			<?php echo $content_bottom; ?>
+		</div>
+		
+	</div>
+</div>
+
+<script type="text/javascript"><!--
+$(document).ready(function() {
+	$('.date').datepicker({dateFormat: 'yy-mm-dd'});
+});
+//--></script> 
+<?php echo $footer; ?>

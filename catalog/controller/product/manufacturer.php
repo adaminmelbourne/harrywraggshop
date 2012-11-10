@@ -172,6 +172,7 @@ class ControllerProductManufacturer extends Controller {
 			$this->data['button_cart'] = $this->language->get('button_cart');
 			$this->data['button_wishlist'] = $this->language->get('button_wishlist');
 			$this->data['button_compare'] = $this->language->get('button_compare');
+			$this->data['button_moreinfo'] = $this->language->get('button_moreinfo');
 			$this->data['button_continue'] = $this->language->get('button_continue');
 			
 			$this->data['compare'] = $this->url->link('product/compare');

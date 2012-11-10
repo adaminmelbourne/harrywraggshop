@@ -6,13 +6,8 @@ class ControllerModuleSlideshow extends Controller {
 		$this->load->model('design/banner');
 		$this->load->model('tool/image');
 		
-		$this->document->addScript('catalog/view/javascript/jquery/nivo-slider/jquery.nivo.slider.pack.js');
-		
-		if (file_exists('catalog/view/theme/' . $this->config->get('config_template') . '/stylesheet/slideshow.css')) {
-			$this->document->addStyle('catalog/view/theme/' . $this->config->get('config_template') . '/stylesheet/slideshow.css');
-		} else {
-			$this->document->addStyle('catalog/view/theme/default/stylesheet/slideshow.css');
-		}
+		$this->document->addScript('catalog/view/theme/rgen-cupid/js/jquery.flexslider-min.js');
+		$this->document->addStyle('catalog/view/theme/rgen-cupid/stylesheet/flexslider.css');
 		
 		$this->data['width'] = $setting['width'];
 		$this->data['height'] = $setting['height'];
@@ -40,6 +35,15 @@ class ControllerModuleSlideshow extends Controller {
 		} else {
 			$this->template = 'default/template/module/slideshow.tpl';
 		}
+		
+		$this->load->model('design/layout');
+		$this->data ['getRoute'] = 'common/home';
+		if (isset($this->request->get['route'])) {
+			$this->data ['getRoute'] = $this->request->get['route'];
+		} else {
+			$this->data ['getRoute'] = 'common/home';
+		}
+
 		
 		$this->render();
 	}

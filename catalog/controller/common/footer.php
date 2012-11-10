@@ -1,6 +1,6 @@
 <?php  
 class ControllerCommonFooter extends Controller {
-	protected function index() {
+	protected function index($getLayouts) {
 		$this->language->load('common/footer');
 		
 		$this->data['text_information'] = $this->language->get('text_information');
@@ -23,14 +23,14 @@ class ControllerCommonFooter extends Controller {
 		$this->data['informations'] = array();
 
 		foreach ($this->model_catalog_information->getInformations() as $result) {
-			if ($result['bottom']) {
+      		if ($result['bottom']) {
 				$this->data['informations'][] = array(
 					'title' => $result['title'],
 					'href'  => $this->url->link('information/information', 'information_id=' . $result['information_id'])
 				);
 			}
     	}
-
+		
 		$this->data['contact'] = $this->url->link('information/contact');
 		$this->data['return'] = $this->url->link('account/return/insert', '', 'SSL');
     	$this->data['sitemap'] = $this->url->link('information/sitemap');
@@ -45,11 +45,30 @@ class ControllerCommonFooter extends Controller {
 
 		$this->data['powered'] = sprintf($this->language->get('text_powered'), $this->config->get('config_name'), date('Y', time()));
 		
+		
+		
 		if (file_exists(DIR_TEMPLATE . $this->config->get('config_template') . '/template/common/footer.tpl')) {
 			$this->template = $this->config->get('config_template') . '/template/common/footer.tpl';
 		} else {
 			$this->template = 'default/template/common/footer.tpl';
 		}
+		
+		
+		// CHECK PAGE LAYOUT TO SET CUSTOM FOOTER
+		
+		$this->load->model('design/layout');
+		$this->data ['getRoute'] = 'common/home';
+		if (isset($this->request->get['route'])) {
+			$this->data ['getRoute'] = $this->request->get['route'];
+		} else {
+			$this->data ['getRoute'] = 'common/home';
+		}
+		
+		//========================
+		
+		$this->children = array(
+			'module/rgen_theme'
+		);
 		
 		$this->render();
 	}

@@ -1,6 +1,11 @@
 <?php 
 class ControllerProductCategory extends Controller {  
 	public function index() { 
+	
+		$this->document->addScript('catalog/view/theme/rgen-cupid/js/jquery.jscrollpane.min.js');
+		$this->document->addScript('catalog/view/theme/rgen-cupid/js/jquery.mousewheel.js');
+		$this->document->addStyle('catalog/view/theme/rgen-cupid/stylesheet/scrollpane.css');
+		
 		$this->language->load('product/category');
 		
 		$this->load->model('catalog/category');
@@ -96,6 +101,7 @@ class ControllerProductCategory extends Controller {
 			$this->data['button_cart'] = $this->language->get('button_cart');
 			$this->data['button_wishlist'] = $this->language->get('button_wishlist');
 			$this->data['button_compare'] = $this->language->get('button_compare');
+			$this->data['button_moreinfo'] = $this->language->get('button_moreinfo');
 			$this->data['button_continue'] = $this->language->get('button_continue');
 					
 			if ($category_info['image']) {
@@ -128,10 +134,10 @@ class ControllerProductCategory extends Controller {
 			foreach ($results as $result) {
 				$data = array(
 					'filter_category_id'  => $result['category_id'],
-					'filter_sub_category' => true
+					'filter_sub_category' => true	
 				);
-				
-				$product_total = $this->model_catalog_product->getTotalProducts($data);				
+							
+				$product_total = $this->model_catalog_product->getTotalProducts($data);
 				
 				$this->data['categories'][] = array(
 					'name'  => $result['name'] . ($this->config->get('config_product_count') ? ' (' . $product_total . ')' : ''),
